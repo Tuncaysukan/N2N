@@ -2,7 +2,24 @@
 
 @section('title', 'İletişim - N2N Tekstil')
 @section('description', 'N2N Tekstil iletişim bilgileri. Bize ulaşın ve sorularınızı sorun.')
-
+<style>
+    .slider-slide.active .slider-button {
+    opacity: 1;
+    transform: translateY(0);
+    display: none;
+}
+img.h-16.md\:h-24.mb-4.drop-shadow-lg.object-contain {
+    height: 57%;
+}
+img.h-8.w-auto.mr-2 {
+    height: 70px;
+    width: 68px;
+}
+img.w-64.h-64.mx-auto.object-contain.rounded-lg {
+    height: auto;
+    width: auto;
+}
+</style>
 @section('content')
 <!-- Hero Section -->
 <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
@@ -21,7 +38,7 @@
             <!-- Contact Form -->
             <div>
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Mesaj Gönderin</h2>
-                
+
                 @if(session('success'))
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
                         {{ session('success') }}
@@ -30,7 +47,7 @@
 
                 <form action="{{ route('contact.send') }}" method="POST" class="space-y-6">
                     @csrf
-                    
+
                     <div>
                         <label for="name" class="block text-gray-700 font-medium mb-2">
                             {{ __('messages.name') }} <span class="text-red-500">*</span>
@@ -100,7 +117,7 @@
             <!-- Contact Information -->
             <div>
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">İletişim Bilgileri</h2>
-                
+
                 <div class="space-y-6">
                     <div class="flex items-start space-x-4">
                         <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -161,12 +178,12 @@
                     <h3 class="font-semibold text-gray-800 mb-4">Harita</h3>
                     @if(isset($settings['map_coordinates']) && $settings['map_coordinates'])
                         <div class="rounded-lg overflow-hidden">
-                            <iframe src="{{ $settings['map_coordinates'] }}" 
-                                    width="100%" 
-                                    height="256" 
-                                    style="border:0;" 
-                                    allowfullscreen="" 
-                                    loading="lazy" 
+                            <iframe src="{{ $settings['map_coordinates'] }}"
+                                    width="100%"
+                                    height="256"
+                                    style="border:0;"
+                                    allowfullscreen=""
+                                    loading="lazy"
                                     referrerpolicy="no-referrer-when-downgrade">
                             </iframe>
                         </div>

@@ -15,6 +15,11 @@ img.h-8.w-auto.mr-2 {
     height: 70px;
     width: 68px;
 }
+
+img.w-64.h-64.mx-auto.object-contain.rounded-lg {
+    height: auto;
+    width: auto;
+}
 </style>
 @section('content')
 <!-- Hero Section -->

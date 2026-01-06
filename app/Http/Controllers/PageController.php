@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Page;
+use App\Models\Setting;
 
 class PageController extends Controller
 {
     public function about()
     {
-        $page = Page::where('slug', 'hakkimizda')->first();
-        
-        if (!$page) {
+        $settings = Setting::pluck('value', 'key')->toArray();
+        $aboutPage = Page::where('slug', 'hakkimizda')->first();
+
+        if (!$aboutPage) {
             // Varsayılan içerik
-            $page = (object)[
+            $aboutPage = (object)[
                 'title_tr' => 'Hakkımızda',
                 'title_en' => 'About Us',
                 'content_tr' => 'N2N Tekstil olarak, Havaianas, New Era ve Nike Swim gibi dünyaca ünlü markaların Türkiye distribütörüyüz. Müşterilerimize en kaliteli ürünleri sunmayı taahhüt ediyoruz. 2010 yılında kurulan şirketimiz, moda ve perakende sektöründe edindiği tecrübe ile müşteri memnuniyetini ön planda tutmaktadır.',
@@ -24,7 +26,7 @@ class PageController extends Controller
                 'meta_description_en' => 'N2N Tekstil about page. We have been the distributor of premium sports brands in Turkey since 2010.'
             ];
         }
-        
-        return view('pages.about', compact('page'));
+
+        return view('pages.about', compact('aboutPage', 'settings'));
     }
 }
