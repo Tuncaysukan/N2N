@@ -31,22 +31,45 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="title_tr" class="block text-sm font-medium text-gray-700 mb-2">
-                            Başlık (Türkçe) <span class="text-red-500">*</span>
+                            Başlık (Türkçe)
                         </label>
-                        <input type="text" id="title_tr" name="title_tr" required
+                        <input type="text" id="title_tr" name="title_tr"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value="{{ old('title_tr', $slider->title_tr) }}">
                     </div>
 
                     <div>
                         <label for="title_en" class="block text-sm font-medium text-gray-700 mb-2">
-                            Başlık (İngilizce) <span class="text-red-500">*</span>
+                            Başlık (İngilizce)
                         </label>
-                        <input type="text" id="title_en" name="title_en" required
+                        <input type="text" id="title_en" name="title_en"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value="{{ old('title_en', $slider->title_en) }}">
                     </div>
                 </div>
+
+                @php
+                    $logoUrl = null;
+                    $path = parse_url($slider->button_link, PHP_URL_PATH);
+                    $segments = $path ? explode('/', trim((string) $path, '/')) : [];
+                    if (count($segments) >= 2 && $segments[0] === 'brands') {
+                        $slug = $segments[1];
+                        $brand = \App\Models\Brand::where('slug', $slug)->first();
+                        if ($brand) {
+                            if (!empty($brand->image)) {
+                                $logoUrl = asset('storage/' . $brand->image);
+                            } elseif ($brand->activeImages()->count() > 0) {
+                                $logoUrl = asset('storage/' . $brand->activeImages()->first()->image_path);
+                            }
+                        }
+                    }
+                @endphp
+                @if($logoUrl)
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Marka Logosu Önizleme</label>
+                        <img src="{{ $logoUrl }}" alt="Marka Logosu" class="h-16 object-contain">
+                    </div>
+                @endif
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>

@@ -2,14 +2,27 @@
 
 @section('title', $brand->{'name'} . ' - N2N Tekstil')
 @section('description', $brand->{'description_' . app()->getLocale()})
-
+<style>
+    .slider-slide.active .slider-button {
+    opacity: 1;
+    transform: translateY(0);
+    display: none;
+}
+img.h-16.md\:h-24.mb-4.drop-shadow-lg.object-contain {
+    height: 57%;
+}
+img.h-8.w-auto.mr-2 {
+    height: 70px;
+    width: 68px;
+}
+</style>
 @section('content')
 <!-- Hero Section -->
 <section class="bg-gradient-to-r from-red-500 to-red-700 text-white py-20 relative">
     @if($brand->activeImages->count() > 0)
         <div class="absolute inset-0 overflow-hidden">
-            <img src="{{ asset('storage/' . $brand->activeImages->first()->image_path) }}" 
-                 alt="{{ $brand->name }}" 
+            <img src="{{ asset('storage/' . $brand->activeImages->first()->image_path) }}"
+                 alt="{{ $brand->name }}"
                  class="w-full h-full object-cover blur-lg opacity-30">
         </div>
     @endif
@@ -28,7 +41,7 @@
             </div>
             <div class="text-center">
                 @if($brand->image)
-                    <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name }}" class="w-64 h-64 mx-auto object-cover rounded-lg">
+                    <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name }}" class="w-64 h-64 mx-auto object-contain rounded-lg">
                 @else
                     <div class="w-64 h-64 mx-auto bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center">
                         <span class="text-3xl font-bold text-white">NE</span>
@@ -49,8 +62,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($brand->activeImages as $image)
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <img src="{{ asset('storage/' . $image->image_path) }}" 
-                         alt="{{ $image->{'title_' . app()->getLocale()} ?? $brand->name }}" 
+                    <img src="{{ asset('storage/' . $image->image_path) }}"
+                         alt="{{ $image->{'title_' . app()->getLocale()} ?? $brand->name }}"
                          class="w-full h-64 object-cover">
                     <div class="p-6">
                         @if($image->{'title_' . app()->getLocale()})
@@ -95,8 +108,8 @@
             </div>
             <div>
                 @if($brand->activeImages->count() > 0)
-                    <img src="{{ asset('storage/' . $brand->activeImages->first()->image_path) }}" 
-                         alt="{{ $brand->name }}" 
+                    <img src="{{ asset('storage/' . $brand->activeImages->first()->image_path) }}"
+                         alt="{{ $brand->name }}"
                          class="w-full h-96 object-cover rounded-lg shadow-xl">
                 @endif
             </div>

@@ -25,7 +25,7 @@ Route::get('/clear', function() {
             Artisan::call('event:clear');
             return redirect()->back()->with('success', 'All caches cleared successfully!');
         })->name('clear.cache');
-        
+
 // Language Switch
 Route::get('/language/{locale}', function ($locale) {
     session(['locale' => $locale]);
@@ -37,19 +37,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    
+
     Route::middleware('auth:admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/', function () {
             return redirect()->route('admin.dashboard');
         });
-        
+
         // Storage Link Route
         Route::get('/storage-link', function() {
             Artisan::call('storage:link');
             return redirect()->back()->with('success', 'Storage linked successfully!');
         })->name('storage.link');
-        
+
         // Brand Routes
         Route::prefix('brands')->name('brands.')->group(function () {
             Route::get('/', [BrandController::class, 'index'])->name('index');
@@ -58,7 +58,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{brand}/edit', [BrandController::class, 'edit'])->name('edit');
             Route::put('/{brand}', [BrandController::class, 'update'])->name('update');
             Route::delete('/{brand}', [BrandController::class, 'destroy'])->name('destroy');
-            
+
             // Brand Image Routes
             Route::prefix('{brand}/images')->name('images.')->group(function () {
                 Route::post('/', [BrandController::class, 'addImage'])->name('add');
@@ -66,7 +66,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::delete('/{brandImage}', [BrandController::class, 'deleteImage'])->name('delete');
             });
         });
-        
+
         // Slider Routes
         Route::prefix('sliders')->name('sliders.')->group(function () {
             Route::get('/', [SliderController::class, 'index'])->name('index');
@@ -76,7 +76,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{slider}', [SliderController::class, 'update'])->name('update');
             Route::delete('/{slider}', [SliderController::class, 'destroy'])->name('destroy');
         });
-        
+
         // Page Routes
         Route::prefix('pages')->name('pages.')->group(function () {
             Route::get('/', [PageController::class, 'index'])->name('index');
@@ -86,7 +86,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{page}', [PageController::class, 'update'])->name('update');
             Route::delete('/{page}', [PageController::class, 'destroy'])->name('destroy');
         });
-        
+
         // Message Routes
         Route::prefix('messages')->name('messages.')->group(function () {
             Route::get('/', [MessageController::class, 'index'])->name('index');
@@ -94,20 +94,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{message}/read', [MessageController::class, 'markAsRead'])->name('mark.read');
             Route::delete('/{message}', [MessageController::class, 'destroy'])->name('destroy');
         });
-        
+
         // Setting Routes
         Route::prefix('settings')->name('settings.')->group(function () {
             Route::get('/', [SettingController::class, 'index'])->name('index');
             Route::put('/', [SettingController::class, 'update'])->name('update');
         });
-        
+
         // About Page Routes
         Route::prefix('about')->name('about.')->group(function () {
             Route::get('/edit', [AboutPageController::class, 'edit'])->name('edit');
             Route::post('/', [AboutPageController::class, 'update'])->name('update');
         });
     });
-    
+
     // Redirect admin root to login if not authenticated
     Route::get('/', function () {
         return redirect()->route('admin.login');
@@ -122,6 +122,7 @@ Route::prefix('brands')->name('brands.')->group(function () {
     Route::get('/havaianas', [FrontendBrandController::class, 'havaianas'])->name('havaianas');
     Route::get('/new-era', [FrontendBrandController::class, 'newEra'])->name('new_era');
     Route::get('/nike-swim', [FrontendBrandController::class, 'nikeSwim'])->name('nike_swim');
+    Route::get('/{slug}', [FrontendBrandController::class, 'show'])->name('show');
 });
 
 // Page Routes

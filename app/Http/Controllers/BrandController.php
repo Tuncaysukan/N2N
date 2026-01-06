@@ -8,6 +8,25 @@ use App\Models\Setting;
 
 class BrandController extends Controller
 {
+    public function show(string $slug)
+    {
+        $brand = Brand::where('slug', $slug)->firstOrFail();
+        $slug = $brand->slug; // Normalize slug from DB
+        $brand->load('activeImages');
+        $settings = Setting::pluck('value', 'key')->toArray();
+
+        if ($slug === 'havaianas') {
+            return view('brands.havaianas', compact('brand', 'settings'));
+        }
+        if ($slug === 'new-era') {
+            return view('brands.new-era', compact('brand', 'settings'));
+        }
+        if ($slug === 'nike-swim') {
+            return view('brands.nike-swim', compact('brand', 'settings'));
+        }
+
+        abort(404);
+    }
     public function havaianas()
     {
         $brand = Brand::where('slug', 'havaianas')->firstOrFail();

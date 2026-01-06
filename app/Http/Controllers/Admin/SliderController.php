@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Slider;
+use App\Models\Brand;
 
 class SliderController extends Controller
 {
@@ -22,8 +23,8 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title_tr' => 'required|string|max:255',
-            'title_en' => 'required|string|max:255',
+            'title_tr' => 'nullable|string|max:255',
+            'title_en' => 'nullable|string|max:255',
             'subtitle_tr' => 'nullable|string',
             'subtitle_en' => 'nullable|string',
             'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -34,11 +35,24 @@ class SliderController extends Controller
             'order' => 'integer'
         ]);
 
+        $derivedTitle = '';
+        if ($request->filled('button_link')) {
+            $path = parse_url($request->button_link, PHP_URL_PATH);
+            $segments = $path ? explode('/', trim((string) $path, '/')) : [];
+            if (count($segments) >= 2 && $segments[0] === 'brands') {
+                $slug = $segments[1];
+                $brand = Brand::where('slug', $slug)->first();
+                if ($brand) {
+                    $derivedTitle = $brand->name;
+                }
+            }
+        }
+
         $imagePath = $request->file('image_path')->store('sliders', 'public');
 
         Slider::create([
-            'title_tr' => $request->title_tr,
-            'title_en' => $request->title_en,
+            'title_tr' => $request->title_tr ?? $derivedTitle ?? '',
+            'title_en' => $request->title_en ?? $derivedTitle ?? '',
             'subtitle_tr' => $request->subtitle_tr,
             'subtitle_en' => $request->subtitle_en,
             'image_path' => $imagePath,
@@ -60,8 +74,8 @@ class SliderController extends Controller
     public function update(Request $request, Slider $slider)
     {
         $request->validate([
-            'title_tr' => 'required|string|max:255',
-            'title_en' => 'required|string|max:255',
+            'title_tr' => 'nullable|string|max:255',
+            'title_en' => 'nullable|string|max:255',
             'subtitle_tr' => 'nullable|string',
             'subtitle_en' => 'nullable|string',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -72,9 +86,22 @@ class SliderController extends Controller
             'order' => 'integer'
         ]);
 
+        $derivedTitle = '';
+        if ($request->filled('button_link')) {
+            $path = parse_url($request->button_link, PHP_URL_PATH);
+            $segments = $path ? explode('/', trim((string) $path, '/')) : [];
+            if (count($segments) >= 2 && $segments[0] === 'brands') {
+                $slug = $segments[1];
+                $brand = Brand::where('slug', $slug)->first();
+                if ($brand) {
+                    $derivedTitle = $brand->name;
+                }
+            }
+        }
+
         $data = [
-            'title_tr' => $request->title_tr,
-            'title_en' => $request->title_en,
+            'title_tr' => ($request->title_tr ?? $slider->title_tr ?? $derivedTitle ?? ''),
+            'title_en' => ($request->title_en ?? $slider->title_en ?? $derivedTitle ?? ''),
             'subtitle_tr' => $request->subtitle_tr,
             'subtitle_en' => $request->subtitle_en,
             'button_text_tr' => $request->button_text_tr,

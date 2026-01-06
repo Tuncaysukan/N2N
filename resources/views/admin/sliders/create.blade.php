@@ -23,18 +23,18 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="title_tr" class="block text-sm font-medium text-gray-700 mb-2">
-                            Başlık (Türkçe) <span class="text-red-500">*</span>
+                            Başlık (Türkçe)
                         </label>
-                        <input type="text" id="title_tr" name="title_tr" required
+                        <input type="text" id="title_tr" name="title_tr"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value="{{ old('title_tr') }}">
                     </div>
 
                     <div>
                         <label for="title_en" class="block text-sm font-medium text-gray-700 mb-2">
-                            Başlık (İngilizce) <span class="text-red-500">*</span>
+                            Başlık (İngilizce)
                         </label>
-                        <input type="text" id="title_en" name="title_en" required
+                        <input type="text" id="title_en" name="title_en"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value="{{ old('title_en') }}">
                     </div>
